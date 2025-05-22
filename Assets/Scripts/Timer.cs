@@ -41,7 +41,7 @@ public class Timer : MonoBehaviour
             {
                 isAnsweringQuestion = true;
                 loadNextQuestion = true;
-                timerValue = timeToAnswerQuestion; 
+                timerValue = timeToAnswerQuestion;
             }
         }
         Debug.Log(isAnsweringQuestion + ":" + timerValue + ":" + fillAmount);

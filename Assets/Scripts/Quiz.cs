@@ -8,9 +8,9 @@ public class Quiz : MonoBehaviour
 {
     [Header("Questions")]
     [SerializeField] TextMeshProUGUI questionText;
-    [SerializeField] TextMeshProUGUI Score;
-    [SerializeField] Slider slider;
+    public Slider slider;
     int score = 0;
+    bool correctAnswerScore = false;
     [SerializeField] List<QuestionsSO> ListOfQuestions = new List<QuestionsSO>();
     [SerializeField] QuestionsSO Question;
     [Header("Answers")]
@@ -22,7 +22,7 @@ public class Quiz : MonoBehaviour
     [Header("Timers")]
     [SerializeField] UnityEngine.UI.Image timerImage;
     Timer timer;
-    int totalQuestions;
+    public int totalQuestions;
     void Start()
     {
         slider.value = 0;
@@ -40,6 +40,16 @@ public class Quiz : MonoBehaviour
         }
         answerNotSelected();
     }
+    public int getScore()
+    {
+        int scorePercentage = (score * 100) / totalQuestions;
+        return scorePercentage;
+    }
+
+    public bool CorrectQuestionOrNot()
+    {
+        return correctAnswerScore;
+    }
 
     private void answerNotSelected()
     {
@@ -48,6 +58,7 @@ public class Quiz : MonoBehaviour
         {
             if (buttonImage.sprite == defaultAnswerSprite)
             {
+                correctAnswerScore = false;
                 setButtonState(false);
                 buttonImage.sprite = correctAnswerSprite;
                 string correctAnswer = Question.getAnswer(Question.getCorrectAnsIndex());
@@ -62,14 +73,16 @@ public class Quiz : MonoBehaviour
         if (index == Question.getCorrectAnsIndex())
         {
             score++;
-            int scorePercentage = (score * 100) / totalQuestions;
-            Score.text = scorePercentage.ToString() + "%";
+            //Score.text = scorePercentage.ToString() + "%";
+            //Score.text = "blahhh";
+            correctAnswerScore = true;
             questionText.text = "correct";
             buttonImage = answers[index].GetComponent<UnityEngine.UI.Image>();
             buttonImage.sprite = correctAnswerSprite;
         }
         else if (index != Question.getCorrectAnsIndex())
         {
+            correctAnswerScore = false;
             int correctIndex = Question.getCorrectAnsIndex();
             string correctAnswer = Question.getAnswer(correctIndex);
             questionText.text = "False! The correct answer is " + correctAnswer;
